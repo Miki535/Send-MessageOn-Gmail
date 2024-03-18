@@ -8,8 +8,10 @@ import (
 )
 
 var tpl = template.Must(template.ParseFiles("templates/index.html"))
+var tplp = template.Must(template.ParseFiles("templates/about.html"))
 
 func main() {
+	http.HandleFunc("/about", about)
 	http.HandleFunc("/", HomeFunc)
 	http.ListenAndServe(":8080", nil)
 }
@@ -33,4 +35,12 @@ func HomeFunc(w http.ResponseWriter, r *http.Request) {
 
 	}
 	tpl.Execute(w, nil)
+}
+
+func about(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+
+	}
+	tplp.Execute(w, nil)
+
 }
