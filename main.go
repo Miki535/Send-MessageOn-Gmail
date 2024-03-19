@@ -10,12 +10,14 @@ import (
 var tpl = template.Must(template.ParseFiles("templates/index.html"))
 
 func main() {
+	http.HandleFunc("/about", about)
 	http.HandleFunc("/", HomeFunc)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil) //start server on localhost :8080
 }
 
 func HomeFunc(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+		// parse information from frontend
 		ownGmail := r.FormValue("ownGmail")
 		secretKEY := r.FormValue("KEY")
 		gmail := r.FormValue("gmail")
@@ -25,6 +27,8 @@ func HomeFunc(w http.ResponseWriter, r *http.Request) {
 		to := []string{gmail}
 		msg := message
 
+		//send message on email
+
 		err := smtp.SendMail("smtp.gmail.com:587", auth, ownGmail, to, []byte(fmt.Sprint(msg)))
 
 		if err != nil {
@@ -33,5 +37,14 @@ func HomeFunc(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}
+	tpl.Execute(w, nil)
+}
+
+// func for frontend storage about
+func about(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+
+	}
+
 	tpl.Execute(w, nil)
 }
